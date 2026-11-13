@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>آزمایشگاه رم: رم بیشتر همیشه سیستم را سریع‌تر می‌کند؟</title>
+<style>
+:root{--bg:#0f4a35;--card:#0b3a2b;--ink:#f1f5ee;--mut:#b4d2c1;--line:#2f7a5a;--grn:#5fe08a;--gold:#f2d479;--cu:#d9a93a;--red:#ff6b5b;--okbg:rgba(95,224,138,.16);--badbg:rgba(255,107,91,.2);color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Tahoma,"Segoe UI","Noto Sans Arabic","DejaVu Sans",Arial,sans-serif;line-height:1.9;font-size:16px}
+main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.6rem;line-height:1.5;margin:8px 0 6px;font-weight:800}
+h2{font-size:1.15rem;margin:0 0 10px;font-weight:800}
+p{margin:0 0 10px}
+.mut{color:var(--mut);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0}
+.claim{border-right:4px solid var(--gold);padding:4px 12px;margin:14px 0;font-weight:600}
+.row{display:flex;flex-wrap:wrap;margin:-4px}
+.row>*{margin:4px}
+button{font:inherit;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:10px;padding:6px 14px;cursor:pointer;min-height:44px}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+button[aria-pressed="true"]{background:var(--grn);border-color:var(--grn);color:#fff;font-weight:600}
+.lbl{font-weight:600;margin:12px 0 6px}
+.track{position:relative;height:46px;background:repeating-linear-gradient(90deg,transparent 0 calc(100%/16 - 1px),var(--line) calc(100%/16 - 1px) calc(100%/16));border:1px solid var(--line);border-radius:6px;margin-top:8px;direction:ltr;overflow:visible}
+.seg{position:absolute;top:0;height:100%;transition:width .35s,left .35s}
+.ramBox{position:absolute;top:-6px;height:58px;border:3px solid var(--gold);border-radius:6px;transition:width .35s;pointer-events:none}
+.legend{display:flex;flex-wrap:wrap;font-size:.88rem;margin-top:12px}
+.legend>span{margin:0 0 6px 14px}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:middle;margin-left:6px}
+.meter{height:22px;background:var(--line);border-radius:11px;overflow:hidden;direction:ltr}
+.meter div{height:100%;transition:width .35s,background .35s}
+.big{font-size:2rem;font-weight:800}
+.verdict{padding:12px 14px;border-radius:10px;margin-top:12px}
+.ok{background:var(--okbg)}.bad{background:var(--badbg)}
+svg{width:100%;height:auto;display:block}
+.q{margin-bottom:18px}
+.opt{display:block;width:100%;text-align:right;margin:6px 0}
+.opt.right{background:var(--okbg);border-color:var(--grn)}
+.opt.wrong{background:var(--badbg);border-color:var(--red)}
+.fb{margin-top:6px;font-size:.93rem}
+.reg{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:.95rem;margin-bottom:10px}
+.school{display:table;margin:0 auto 8px 0;border:1px solid var(--line);border-radius:6px;padding:2px 10px;font-size:.72rem;line-height:1.7;color:var(--mut)}
+.by{text-align:left;direction:rtl;margin-top:28px;font-size:.85rem;color:var(--mut)}
+.pbtn.right{background:var(--okbg);border-color:var(--grn)}
+.pbtn.wrong{background:var(--badbg);border-color:var(--red)}
+body{background:radial-gradient(circle at 20px 20px,rgba(217,169,58,.35) 2px,transparent 3px) 0 0/40px 40px,linear-gradient(rgba(217,169,58,.07) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(90deg,rgba(217,169,58,.07) 1px,transparent 1px) 0 0/40px 40px,#0f4a35}
+h1,h2,.big{color:var(--cu)}
+.card{position:relative;border:1.5px solid rgba(217,169,58,.75);box-shadow:0 3px 0 rgba(0,0,0,.28)}
+.card::before,.card::after{content:"";position:absolute;top:-6px;width:9px;height:9px;border-radius:50%;background:var(--cu);box-shadow:0 0 0 2px #0f4a35}
+.card::before{left:16px}.card::after{right:16px}
+button{border-color:var(--cu);color:var(--ink)}
+button:hover:not(:disabled){background:rgba(217,169,58,.16)}
+button[aria-pressed="true"],button[aria-pressed="true"]:hover:not(:disabled){background:var(--cu);border-color:var(--cu);color:#1a1405}
+.meter,.reg{background:#0a2e22}
+.school{border-color:var(--cu);color:var(--cu)}
+.claim{border-right-color:var(--cu)}
+summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;min-height:44px}
+summary::-webkit-details-marker{display:none}
+summary h2{margin:0;flex:1}
+summary::after{margin-right:10px;content:"▾";color:var(--cu);font-size:1.3rem;transition:transform .2s}
+details[open]>summary{margin-bottom:10px}
+details[open]>summary::after{transform:rotate(180deg)}
+summary:focus-visible{outline:3px solid var(--gold);outline-offset:4px;border-radius:6px}
+</style>
+</head>
+<body>
+<main>
+<p class="claim" id="jswarn">اگر این پیام را می‌بینی، JavaScript در برنامه‌ای که فایل را باز کرده غیرفعال است و دکمه‌ها کار نمی‌کنند. فایل را با مرورگر Chrome باز کن.</p>
+<noscript><p class="claim">برای استفاده از این ابزار باید JavaScript فعال باشد. فایل را در یک مرورگر معمولی مثل Chrome یا Firefox باز کنید.</p></noscript>
+<div class="school">هنرستان فنی وحرفه‌ای ولی عصر</div>
+<h1>آزمایشگاه رم: آیا رم بیشتر همیشه سیستم را سریع‌تر می‌کند؟</h1>
+<div class="row" style="margin-bottom:6px"><button id="toggleAll">باز کردن همه بخش‌ها</button></div>
+<p class="claim">باور رایج: «سیستمم کند شده است؛ پس باید رم بیشتری بخرم.» این باور فقط گاهی درست است. با این آزمایشگاه بررسی کن چه زمانی درست است.</p>
+
+<details class="card" aria-labelledby="sp" open>
+<summary><h2 id="sp">پیش‌بینی کن، بعد ببین</h2></summary>
+<div id="pbox" aria-live="polite"></div>
+</details>
+
+<details class="card" aria-labelledby="s1" open>
+<summary><h2 id="s1">۱. کار روی سیستم را انتخاب کن</h2></summary>
+<div class="row" id="scen" role="group" aria-label="سناریو"></div>
+<p class="mut" id="apps" style="margin-top:10px"></p>
+<h2 style="margin-top:14px">۲. ظرفیت رم را انتخاب کن</h2>
+<div class="row" id="rams" role="group" aria-label="ظرفیت رم"></div>
+<h2 style="margin-top:14px">۳. پردازنده و نوع هارد را انتخاب کن</h2>
+<div class="row" id="cpus"></div><div class="row" id="disks" style="margin-top:8px"></div>
+</details>
+
+<details class="card" aria-live="polite" aria-labelledby="s3" open>
+<summary><h2 id="s3">۴. داخل سیستم چه می‌گذرد؟</h2></summary>
+<div class="track" id="track"></div>
+<div class="legend">
+<span><i style="background:var(--grn)"></i>داده‌های داخل رم</span>
+<span><i style="background:var(--red)"></i>داده‌هایی که در رم جا نمی‌شوند و به هارد منتقل می‌شوند</span>
+<span><i style="border:3px solid var(--gold)"></i>ظرفیت رم نصب‌شده</span>
+</div>
+<div class="lbl">سرعت پاسخ‌گویی سیستم</div>
+<div class="meter"><div id="meterFill"></div></div>
+<div class="big" id="perf"></div>
+<div class="verdict" id="verdict"></div>
+<div id="bn"></div>
+</details>
+
+<details class="card">
+<summary><h2>نمودار اثر رم برای همین کار</h2></summary>
+<svg id="chart" viewBox="0 0 340 170" role="img" aria-label="نمودار سرعت بر حسب ظرفیت رم"></svg>
+<p class="mut">دقت کن: نمودار در ابتدا شیب تندی دارد و سپس صاف می‌شود. پس از رسیدن به «رم کافی»، افزایش رم تقریباً اثری ندارد.</p>
+</details>
+
+<details class="card" aria-labelledby="sb">
+<summary><h2 id="sb">چالش بودجه: کدام ارتقا؟</h2></summary>
+<div id="bbox" aria-live="polite"></div>
+</details>
+
+<details class="card">
+<summary><h2>خودت را بسنج</h2></summary>
+<div id="quiz"></div>
+</details>
+
+<details class="card">
+<summary><h2>جمع‌بندی مفهومی</h2></summary>
+<div class="reg" style="white-space:normal">رم، فضای کاری موقت پردازنده است. اگر برنامه‌های در حال اجرا در رم جا شوند، رم Bottleneck نیست. در غیر این صورت، سیستم‌عامل بخشی از داده‌ها را به هارد (حافظه مجازی) منتقل می‌کند و چون هارد بسیار کندتر از رم است، سیستم به‌شدت کند می‌شود. پس پیش از خرید رم، مصرف واقعی آن را در Task Manager بررسی کن. به یاد داشته باش که گاهی Bottleneck پردازنده یا هارد است، نه رم.</div>
+</details>
+<details class="card" aria-labelledby="sr">
+<summary><h2 id="sr">معرفی اثر</h2></summary>
+<div class="reg" id="regText">عنوان اثر: آزمایشگاه رم؛ آیا رم بیشتر همیشه سیستم را سریع‌تر می‌کند؟
+
+محور موضوعی: نگهداری سیستم‌های رایانه‌ای، پودمان پنجم (سخت‌افزار سیستم)
+
+بدفهمی هدف: بسیاری از هنرجویان تصور می‌کنند هرگاه سیستم کند شود، افزایش رم راه‌حل قطعی است. در واقع رم فقط زمانی Bottleneck است که ظرفیت آن از نیاز برنامه‌ها کمتر باشد. پس از آن، علت کندی را باید در جای دیگری مانند پردازنده، نوع هارد، دما یا نرم‌افزار جست‌وجو کرد.
+
+معرفی اثر: ابزاری تعاملی و تحت وب است (یک فایل HTML که نیازی به نصب ندارد). هنرجو ابتدا نتیجه‌ی ارتقای رم را پیش‌بینی می‌کند. سپس در آزمایشگاه دیجیتال، نوع کار، ظرفیت رم، پردازنده و نوع هارد را تغییر می‌دهد و می‌بیند چه مقدار از داده‌ها در رم جا می‌شود، چه مقدار به حافظه مجازی می‌رود و Bottleneck سیستم کجاست. چالش بودجه، تصمیم‌گیری در شرایط واقعی را تمرین می‌دهد و نمودار اثر رم و آزمون کوتاه، یادگیری را تثبیت می‌کند.
+
+هدف یادگیری: هنرجو بتواند نقش رم و حافظه مجازی را توضیح دهد، پیش از ارتقا مصرف واقعی رم را بسنجد و کمبود رم را از کندی ناشی از علت‌های دیگر تشخیص دهد.
+
+شیوه‌ی استفاده در کلاس: ۱) پیش‌بینی گروهی نتیجه‌ی چالش‌ها؛ ۲) بررسی نتیجه در آزمایشگاه؛ ۳) حل چالش بودجه؛ ۴) پاسخ به آزمون؛ ۵) مقایسه با مصرف واقعی رم در Task Manager.
+
+نکته: اعداد مصرف برنامه‌ها و قیمت‌ها تقریبی و آموزشی‌اند.</div>
+<button id="copyReg">کپی متن</button> <span class="mut" id="copyMsg"></span>
+</details>
+<footer class="by">پرهام بویراتی</footer>
+</main>
+<script>
+var jw=document.getElementById("jswarn");if(jw)jw.style.display="none";
+window.onerror=function(m,u,l){var b=document.getElementById("errbar");if(!b){b=document.createElement("p");b.id="errbar";b.className="claim";b.style.color="var(--red)";document.body.insertBefore(b,document.body.firstChild)}b.textContent="خطا در اجرای ابزار: "+m+" (خط "+l+")"};
+var RAMS=[2,4,8,16,32,64];
+var SC=[
+{n:"وب‌گردی سبک",apps:[["سیستم‌عامل",2],["مرورگر (چند تب)",1]]},
+{n:"اداری و ۲۰ تب",apps:[["سیستم‌عامل",2],["مرورگر (۲۰ تب)",3],["Office",1.5]]},
+{n:"بازی سنگین",apps:[["سیستم‌عامل",2],["بازی",8],["مرورگر",1]]},
+{n:"ویرایش ویدئو",apps:[["سیستم‌عامل",2],["ویرایشگر ویدئو",12],["مرورگر",2]]}
+];
+var si=1,ri=1;
+function need(s){return SC[s].apps.reduce(function(a,b){return a+b[1]},0)}
+var CP=[1,2,3],CN=[1,2,3,3],KD=[30,8],ci=1,di=0,CPN=["ضعیف","متوسط","قوی"],DN=["هارد HDD","هارد SSD"];
+function perf(ram,n,k,cs){k=k||30;cs=cs==null?1:cs;var f=Math.min(1,ram/n);return 100*cs/(f>=1?1:1+(1-f)*k)}
+function fa(x){return String(x).replace(/\d/g,function(d){return "۰۱۲۳۴۵۶۷۸۹"[d]})}
+function btns(id,list,cur,fn){var el=document.getElementById(id);el.innerHTML="";list.forEach(function(t,i){var b=document.createElement("button");b.textContent=t;b.setAttribute("aria-pressed",i===cur);b.onclick=function(){fn(i)};el.appendChild(b)})}
+function render(){
+ var n=need(si),ram=RAMS[ri],cs=Math.min(1,CP[ci]/CN[si]),p=perf(ram,n,KD[di],cs);
+ btns("scen",SC.map(function(s){return s.n}),si,function(i){si=i;render()});
+ btns("rams",RAMS.map(function(r){return fa(r)+" گیگابایت"}),ri,function(i){ri=i;render()});
+ btns("cpus",CPN.map(function(t){return "پردازنده "+t}),ci,function(i){ci=i;render()});
+ btns("disks",DN,di,function(i){di=i;render()});
+ document.getElementById("apps").textContent="نیاز به رم: "+SC[si].apps.map(function(a){return a[0]+" "+fa(a[1])+" گیگ"}).join("، ")+" ← مجموع "+fa(n)+" گیگابایت";
+ var sc=Math.max(n,ram)*1.04,inRam=Math.min(n,ram),over=Math.max(0,n-ram);
+ document.getElementById("track").innerHTML=
+  '<div class="seg" style="left:0;width:'+inRam/sc*100+'%;background:var(--grn)"></div>'+
+  '<div class="seg" style="left:'+ram/sc*100+'%;width:'+over/sc*100+'%;background:var(--red)"></div>'+
+  '<div class="ramBox" style="left:-3px;width:calc('+ram/sc*100+'% + 6px)"></div>';
+ var col=p>70?"var(--grn)":p>30?"var(--gold)":"var(--red)";
+ var mf=document.getElementById("meterFill");mf.style.width=p+"%";mf.style.background=col;
+ document.getElementById("perf").textContent=fa(Math.round(p))+"٪";
+ var v=document.getElementById("verdict");
+ if(over>0){v.className="verdict bad";v.innerHTML="<b>کمبود رم.</b> "+fa(over)+" گیگابایت از داده‌ها در رم جا نمی‌شود و به هارد منتقل می‌شود. سیستم مدام داده‌ها را بین رم و هارد جابه‌جا می‌کند و کند می‌شود. در این حالت، افزایش رم واقعاً مؤثر است."}
+ else{var free=ram-n;v.className="verdict ok";v.innerHTML="<b>رم کافی است.</b> "+(free>0?fa(free)+" گیگابایت آن خالی مانده و ":"")+"افزودن رم بیشتر سرعت را بالاتر نمی‌برد. اگر سیستم همچنان کند است، علت را در جای دیگری جست‌وجو کن: پردازنده، نوع هارد (SSD یا HDD)، دما یا بدافزار."}
+ var pts=RAMS.map(function(r,i){return[30+i*52,140-perf(r,n,KD[di],cs)*1.2]});
+ var s='<line x1="25" y1="140" x2="330" y2="140" stroke="var(--line)"/>';
+ s+='<polyline fill="none" stroke="var(--grn)" stroke-width="3" points="'+pts.map(function(q){return q.join(",")}).join(" ")+'"/>';
+ pts.forEach(function(q,i){var c=i===ri;s+='<circle cx="'+q[0]+'" cy="'+q[1]+'" r="'+(c?8:4)+'" fill="'+(c?"var(--gold)":"var(--grn)")+'"/><text x="'+q[0]+'" y="158" text-anchor="middle" font-size="11" fill="var(--mut)">'+fa(RAMS[i])+'</text>'});
+ s+='<text x="330" y="14" text-anchor="end" font-size="11" fill="var(--mut)">سرعت (٪)</text>';
+ document.getElementById("chart").innerHTML=s;
+ var pen=over>0?100/(1+(1-ram/n)*KD[di]):100,cp=cs*100;
+ var it=[["رم (جا شدن برنامه‌ها)",Math.min(100,ram/n*100)],["پردازنده",cp],["هارد هنگام کمبود رم",pen]],h="";
+ it.forEach(function(x){var c=x[1]>70?"var(--grn)":x[1]>30?"var(--gold)":"var(--red)";h+='<div class="lbl">'+x[0]+' ('+fa(Math.round(x[1]))+'٪)</div><div class="meter"><div style="width:'+x[1]+'%;background:'+c+'"></div></div>'});
+ var m=(cp>=100&&pen>=100)?"هیچ Bottleneck‌ای نیست؛ ارتقای هیچ قطعه‌ای فایده ندارد.":(cp<=pen?"Bottleneck پردازنده است. رم بیشتر کمکی نمی‌کند.":"Bottleneck رم است"+(di===0?" و هارد HDD کندی را بدتر کرده. SSD کمی کمک می‌کند، ولی جای رم را نمی‌گیرد.":". SSD ضرر را کم کرده، اما رم کافی بهتر است."));
+ document.getElementById("bn").innerHTML='<h2 style="margin-top:16px">Bottleneck کجاست؟</h2>'+h+'<p style="margin-top:8px"><b>'+m+'</b></p>';
+}
+var Q=[
+{q:"سیستمی ۱۶ گیگابایت رم دارد و کاربر فقط وب‌گردی می‌کند، اما سیستم کند است. آیا ارتقا به ۳۲ گیگابایت کمک می‌کند؟",o:["بله، خیلی","معمولاً نه؛ باید علت‌های دیگر مانند هارد، دما یا بدافزار بررسی شود","فقط اگر رم گران‌تر خریده شود"],a:1,f:"ظرفیت رم از نیاز بیشتر است؛ Bottleneck جای دیگری است."},
+{q:"لپ‌تاپی با ۴ گیگابایت رم هنگام ویرایش عکس کند می‌شود و چراغ هارد آن دائم روشن است. اولین اقدام چیست؟",o:["افزایش رم","تعویض صفحه‌نمایش","تعویض قاب بدنه"],a:0,f:"روشن ماندن دائمی چراغ هارد نشانه‌ی استفاده از حافظه مجازی است؛ یعنی رم کم است."},
+{q:"کدام جمله درست است؟",o:["رم بیشتر همیشه سرعت را بالا می‌برد","اگر رم کمتر از نیاز باشد، حافظه مجازی فعال می‌شود و سیستم به‌شدت کند می‌شود","رم بیشتر از نیاز باعث افزایش فرکانس پردازنده می‌شود"],a:1,f:"رم فقط تا رسیدن به نیاز واقعی مؤثر است، نه بیشتر."}
+];
+var qz=document.getElementById("quiz");
+Q.forEach(function(x,i){var d=document.createElement("div");d.className="q";d.innerHTML="<p><b>"+fa(i+1)+".</b> "+x.q+"</p>";var fb=document.createElement("div");fb.className="fb";
+ x.o.forEach(function(t,j){var b=document.createElement("button");b.className="opt";b.textContent=t;b.onclick=function(){d.querySelectorAll(".opt").forEach(function(e,k){e.classList.remove("right","wrong");if(k===x.a)e.classList.add("right")});if(j!==x.a)b.classList.add("wrong");fb.textContent=(j===x.a?"درست! ":"دوباره فکر کن. ")+x.f};d.appendChild(b)});
+ d.appendChild(fb);qz.appendChild(d)});
+var PC=[{s:0,a:8,b:16},{s:1,a:4,b:8},{s:2,a:8,b:16},{s:3,a:16,b:32}],pi=0;
+function showP(){
+ var c=PC[pi],el=document.getElementById("pbox");
+ el.innerHTML='<p><b>چالش '+fa(pi+1)+' از '+fa(PC.length)+':</b> روی سیستم «'+SC[c.s].n+'» اجرا می‌شود و رم فعلی '+fa(c.a)+' گیگابایت است. اگر رم را به '+fa(c.b)+' گیگابایت برسانیم، سرعت چه می‌شود؟</p><div class="row" id="pop"></div><div id="pres"></div>';
+ var bs=[];
+ ["تقریباً بدون تغییر","کمی بهتر","خیلی بهتر"].forEach(function(t,k){var b=document.createElement("button");b.className="pbtn";b.textContent=t;b.onclick=function(){answerP(k,bs)};bs.push(b);document.getElementById("pop").appendChild(b)});
+}
+function answerP(k,bs){
+ var c=PC[pi],n=need(c.s),p1=perf(c.a,n),p2=perf(c.b,n),r=p2/p1,t=(p2-p1<3)?0:(r<2?1:2),ok=k===t;
+ bs.forEach(function(b,j){b.disabled=true;if(j===t)b.classList.add("right");else if(j===k)b.classList.add("wrong")});
+ var why=t===0?"رم فعلی هم نیاز "+fa(n)+" گیگابایتی را تأمین می‌کرد؛ بنابراین رم اضافه بی‌اثر است.":"رم فعلی از نیاز ("+fa(n)+" گیگابایت) کمتر بود و بخشی از داده‌ها روی هارد می‌رفت؛ رم جدید این مشکل را برطرف کرد.";
+ var res=document.getElementById("pres");
+ res.innerHTML='<div class="verdict '+(ok?"ok":"bad")+'"><b>'+(ok?"پیش‌بینی‌ات درست بود.":"پیش‌بینی‌ات با نتیجه فرق داشت.")+'</b> سرعت از '+fa(Math.round(p1))+'٪ به '+fa(Math.round(p2))+'٪ رسید. '+why+'</div><div class="row" style="margin-top:10px"><button id="pTry">امتحانش کن در آزمایشگاه</button><button id="pNext">چالش بعدی</button></div>';
+ document.getElementById("pTry").onclick=function(){si=c.s;ri=RAMS.indexOf(c.b);render();openS1();document.getElementById("s1").scrollIntoView({behavior:"smooth"})};
+ document.getElementById("pNext").onclick=function(){pi=(pi+1)%PC.length;showP()};
+}
+document.getElementById("copyReg").onclick=function(){var m=document.getElementById("copyMsg"),tx=document.getElementById("regText").innerText;try{navigator.clipboard.writeText(tx).then(function(){m.textContent="کپی شد"},function(){m.textContent="کپی نشد؛ متن را انتخاب و کپی کنید."})}catch(e){m.textContent="کپی نشد؛ متن را انتخاب و کپی کنید."}};
+var BC=[
+{s:1,r:4,c:1,d:0,b:2,t:"در یک کارگاه حسابداری، سیستم هنگام کار اداری با ۲۰ تب باز کند است.",o:[["+۴ گیگ رم",1,{r:8}],["هارد SSD",1.8,{d:1}],["پردازنده قوی‌تر",3.5,{c:2}],["کارت گرافیک",2.5,{}]]},
+{s:3,r:16,c:1,d:1,b:4,t:"در یک استودیوی ویرایش ویدئو، رندر کند انجام می‌شود.",o:[["رم ۳۲ گیگ",2,{r:32}],["پردازنده قوی‌تر",3.5,{c:2}],["کارت گرافیک",3,{}],["هارد بزرگ‌تر",1.5,{}]]},
+{s:2,r:8,c:2,d:0,b:3,t:"در یک گیم‌نت، بازی سنگین کند اجرا می‌شود.",o:[["رم ۱۶ گیگ",2.2,{r:16}],["هارد SSD",1.5,{d:1}],["کارت گرافیک",2.8,{}],["پردازنده قوی‌تر",3.5,{c:2}]]}
+],bi=0;
+function pS(s,r,c,d){return perf(r,need(s),KD[d],Math.min(1,CP[c]/CN[s]))}
+function aft(c,f){return pS(c.s,f.r||c.r,f.c==null?c.c:f.c,f.d==null?c.d:f.d)}
+function showB(){
+ var c=BC[bi],b=document.getElementById("bbox");
+ b.innerHTML='<p><b>مورد '+fa(bi+1)+' از '+fa(BC.length)+':</b> '+c.t+' مشخصات سیستم: رم '+fa(c.r)+' گیگابایت، پردازنده '+CPN[c.c]+'، '+DN[c.d]+'. بودجه: <b>'+fa(c.b)+' میلیون تومان</b> (قیمت‌ها فرضی‌اند). کدام ارتقا را انتخاب می‌کنی؟</p><div class="row" id="bop"></div><div id="bres"></div>';
+ var bs=[];
+ c.o.forEach(function(op,k){var x=document.createElement("button");x.className="pbtn";x.textContent=op[0]+" — "+fa(op[1])+" م.ت";if(op[1]>c.b){x.disabled=true;x.title="خارج از بودجه";x.style.opacity=.45}x.onclick=function(){ansB(k,bs)};bs.push(x);document.getElementById("bop").appendChild(x)});
+}
+function ansB(k,bs){
+ var c=BC[bi],bf=pS(c.s,c.r,c.c,c.d),best=-1,bk=0;
+ c.o.forEach(function(op,j){if(op[1]<=c.b){var v=aft(c,op[2]);if(v>best+.01){best=v;bk=j}}});
+ var a=aft(c,c.o[k][2]),ok=a>=best-.5;
+ bs.forEach(function(x,j){x.disabled=true;if(j===bk)x.classList.add("right");else if(j===k)x.classList.add("wrong")});
+ document.getElementById("bres").innerHTML='<div class="verdict '+(ok?"ok":"bad")+'"><b>'+(ok?"انتخاب درستی بود.":"انتخاب بهینه نبود.")+'</b> سرعت از '+fa(Math.round(bf))+'٪ به '+fa(Math.round(a))+'٪ رسید. '+(a-bf<3?"این ارتقا Bottleneck را برطرف نکرد و پول هدر رفت. ":"")+(ok?"":"بهترین گزینه در این بودجه: "+c.o[bk][0]+" ("+fa(Math.round(best))+"٪). ")+'</div><div class="row" style="margin-top:10px"><button id="bTry">امتحانش کن در آزمایشگاه</button><button id="bNext">مورد بعدی</button></div>';
+ document.getElementById("bTry").onclick=function(){si=c.s;ri=RAMS.indexOf(c.r);ci=c.c;di=c.d;render();openS1();document.getElementById("s1").scrollIntoView({behavior:"smooth"})};
+ document.getElementById("bNext").onclick=function(){bi=(bi+1)%BC.length;showB()};
+}
+function openS1(){var d=document.getElementById("s1");while(d&&d.nodeName!=="DETAILS")d=d.parentNode;if(d)d.open=true}
+document.getElementById("toggleAll").onclick=function(){var ds=Array.prototype.slice.call(document.querySelectorAll("details.card")),any=false;ds.forEach(function(d){if(!d.open)any=true});ds.forEach(function(d){d.open=any});this.textContent=any?"بستن همه بخش‌ها":"باز کردن همه بخش‌ها"};
+try{showP()}catch(e){}
+try{showB()}catch(e){}
+try{render()}catch(e){}
+</script>
+</body>
+</html>
